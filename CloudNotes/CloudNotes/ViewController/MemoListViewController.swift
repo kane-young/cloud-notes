@@ -27,7 +27,10 @@ final class MemoListViewController: UITableViewController {
   }()
   
   @objc func addMemo() {
-    
+    let indexPath = IndexPath(row: Style.firstRow, section: .zero)
+    tableViewModel.addMemo()
+    tableView.insertRows(at: [indexPath], with: .automatic)
+    showMemo(indexPath: indexPath)
   }
   
   //MARK: - Life Cycle function
