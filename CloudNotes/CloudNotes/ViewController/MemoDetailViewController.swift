@@ -80,3 +80,9 @@ extension MemoDetailViewController: MemoDetailViewModelDelegate {
     textView.text = content
   }
 }
+
+extension MemoDetailViewController: UITextViewDelegate {
+  func textViewDidChange(_ textView: UITextView) {
+    viewModel.saveData(textView.text)
+  }
+}
