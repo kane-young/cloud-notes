@@ -8,9 +8,18 @@
 import UIKit
 
 final class MemoListViewController: UITableViewController {
-  private let reuseIdentifier = "memoReuseCell"
-  private let titleString = "메모"
+  // MARK: - Constant and Variable
+  
   private let tableViewModel: MemoListViewModel = MemoListViewModel()
+  
+  enum Style {
+    static let firstRow: Int = 0
+    static let swipeButtonTitle: String = "Delete"
+    static let titleString = "메모"
+    static let reuseIdentifier = "memoReuseCell"
+  }
+  
+  // MARK: - UI Component & action function
   
   lazy var addButton: UIBarButtonItem = {
     let button = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addMemo))
@@ -21,17 +30,26 @@ final class MemoListViewController: UITableViewController {
     
   }
   
+  //MARK: - Life Cycle function
+  
   override func viewDidLoad() {
     super.viewDidLoad()
     self.navigationItem.rightBarButtonItem = addButton
-    self.navigationItem.title = titleString
+    self.navigationItem.title = Style.titleString
     configureTableView()
   }
+  
+  override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
+    tableView.reloadData()
+  }
+  
+  //MARK: - tableView configure
   
   private func configureTableView() {
     tableView.delegate = self
     tableView.dataSource = self
-    tableView.register(MemoListCell.self, forCellReuseIdentifier: reuseIdentifier)
+    tableView.register(MemoListCell.self, forCellReuseIdentifier: Style.reuseIdentifier)
   }
   
   // MARK: - Table view data source
@@ -42,13 +60,11 @@ final class MemoListViewController: UITableViewController {
   
   override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath)
   -> UITableViewCell {
-    guard let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier)
+    guard let cell = tableView.dequeueReusableCell(withIdentifier: Style.reuseIdentifier)
             as? MemoListCell else {
       return UITableViewCell()
     }
-    guard let viewModel = tableViewModel.getMemoViewModel(for: indexPath) else {
-      return UITableViewCell()
-    }
+    let viewModel = tableViewModel.getMemoViewModel(for: indexPath)
     cell.configure(with: viewModel)
     return cell
   }
@@ -56,6 +72,10 @@ final class MemoListViewController: UITableViewController {
   // MARK: - Table view Delegate
   
   override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    showMemo(indexPath: indexPath)
+  }
+  
+  private func showMemo(indexPath: IndexPath) {
     guard let splitViewController = splitViewController as? SplitViewController else { return }
     guard let detailViewController = splitViewController.viewController(for: .secondary)
             as? MemoDetailViewController else {
