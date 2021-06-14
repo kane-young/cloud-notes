@@ -6,14 +6,48 @@
 //
 
 import UIKit
+import CoreData
 
 final class MemoProvider {
-  private var memo: [Memo]?
+  static var shared: MemoProvider = MemoProvider()
   
-  func getMockData() throws -> [Memo]? {
-    guard let dataAsset = NSDataAsset(name: "sample") else { return nil }
-    let data = try JSONDecoder().decode([Memo].self, from: dataAsset.data)
-    self.memo = data
-    return memo
+  private init() { }
+  
+  // MARK: - Core Data stack
+  private let persistentContainer: NSPersistentCloudKitContainer = {
+    let container = NSPersistentCloudKitContainer(name: "CloudNotes")
+    container.loadPersistentStores(completionHandler: { (storeDescription, error) in
+      if let error = error as NSError? {
+        fatalError("Unresolved error \(error), \(error.userInfo)")
+      }
+    })
+    return container
+  }()
+  
+  var context: NSManagedObjectContext {
+    return self.persistentContainer.viewContext
+  }
+  
+  // MARK: - Core Data Saving support
+  func saveContext () {
+    if context.hasChanges {
+      do {
+        try context.save()
+      } catch {
+        let nserror = error as NSError
+        fatalError("Unresolved error \(nserror), \(nserror.userInfo)")
+      }
+    }
+  }
+  
+  func fetchMemos() -> [Memo] {
+    do {
+      guard let fetchResult = try context.fetch(Memo.fetchRequest()) as? [Memo] else {
+        return []
+      }
+      return fetchResult
+    } catch {
+      fatalError(error.localizedDescription)
+    }
   }
 }

@@ -13,13 +13,17 @@ final class MemoDetailViewModel {
     static let doubleNewLine = "\n\n"
   }
   
+  private let context = MemoProvider.shared.context
+  private lazy var memo: Memo = Memo(context: context)
   var delegate: MemoDetailViewModelDelegate?
-  
-  private var memo: Memo = Memo(title: ContentConstant.emptyString,
-                                body: ContentConstant.emptyString,
-                                lastModified: .zero)
-  var date: Int { return memo.lastModified }
-  var content: String { return memo.title + ContentConstant.doubleNewLine + memo.body }
+  var date: Int32 {
+    return memo.lastModified
+  }
+  var content: String {
+    guard let title = memo.title else { return ContentConstant.emptyString }
+    guard let body = memo.body else { return ContentConstant.emptyString }
+    return title + ContentConstant.doubleNewLine + body
+  }
   
   func configure(with memo: Memo) {
     self.memo = memo
