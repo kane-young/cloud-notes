@@ -43,8 +43,12 @@ final class MemoListViewModel {
     return memos.count
   }
   
-  func addMemo(_ memo: Memo) {
-    memos?.append(memo)
+  var isExistedEmptyMemo: Bool {
+    guard let firstMemo = memos.first else { return false }
+    if firstMemo.title?.isEmpty == true {
+      return true
+    }
+    return false
   }
   
   //만든 memoViewModels배열에서 필요한 index의 MemoViewModel만 가지고 오자!!
@@ -69,8 +73,8 @@ final class MemoListViewModel {
   
   // Swipe 했을 경우 Memo가 삭제되는 것을 구현하기 위한 로직
   func deleteMemo(_ indexPath: IndexPath) {
-    let person = self.memos[indexPath.row]
-    memoServiceAdapter.context.delete(person)
+    let memo = self.memos[indexPath.row]
+    memoServiceAdapter.context.delete(memo)
     memoServiceAdapter.saveContext()
   }
 }

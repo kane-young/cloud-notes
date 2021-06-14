@@ -39,6 +39,11 @@ final class MemoListViewController: UITableViewController {
     configureTableView()
   }
   
+  override func viewDidAppear(_ animated: Bool) {
+    super.viewDidAppear(animated)
+    deleteEmptyMemo()
+  }
+  
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
     tableView.reloadData()
@@ -92,5 +97,13 @@ final class MemoListViewController: UITableViewController {
     guard let memo = tableViewModel.getMemo(for: indexPath) else { return }
     detailViewController.configure(with: memo)
     showDetailViewController(detailViewController, sender: self)
+  }
+  
+  private func deleteEmptyMemo() {
+    if tableViewModel.isExistedEmptyMemo == true {
+      let indexPath = IndexPath(row: Style.firstRow, section: 0)
+      tableViewModel.deleteMemo(indexPath)
+      tableView.deleteRows(at: [indexPath], with: .automatic)
+    }
   }
 }
