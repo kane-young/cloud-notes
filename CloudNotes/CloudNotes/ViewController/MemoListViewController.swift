@@ -75,6 +75,14 @@ final class MemoListViewController: UITableViewController {
     showMemo(indexPath: indexPath)
   }
   
+  override func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+    let action = UIContextualAction(style: .destructive, title: Style.swipeButtonTitle, handler: { (action, view, completionHandler) in
+      self.tableViewModel.deleteMemo(indexPath)
+      tableView.reloadData()
+    })
+    return UISwipeActionsConfiguration(actions: [action])
+  }
+  
   private func showMemo(indexPath: IndexPath) {
     guard let splitViewController = splitViewController as? SplitViewController else { return }
     guard let detailViewController = splitViewController.viewController(for: .secondary)
