@@ -11,11 +11,6 @@ final class MemoDetailViewController: UIViewController {
   
   lazy var textView: UITextView = {
     let textView = UITextView()
-    if UIScreen.main.traitCollection.horizontalSizeClass == .compact {
-      textView.backgroundColor = .systemGray4
-    } else if UIScreen.main.traitCollection.horizontalSizeClass == .regular {
-      textView.backgroundColor = .white
-    }
     textView.frame.size = CGSize(width: self.view.frame.width, height: self.view.frame.height)
     textView.frame.origin = .zero
     textView.translatesAutoresizingMaskIntoConstraints = false
@@ -35,8 +30,13 @@ final class MemoDetailViewController: UIViewController {
     self.view.backgroundColor = .white
     self.view.addSubview(textView)
     self.navigationItem.rightBarButtonItem = editButton
+    self.textView.delegate = self
     self.viewModel.delegate = self
+  }
+  
+  override func viewWillLayoutSubviews() {
     configureConstraints()
+    configureTextViewBackgroundColor()
   }
   
   override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
@@ -44,6 +44,14 @@ final class MemoDetailViewController: UIViewController {
       textView.backgroundColor = .white
     } else if previousTraitCollection?.horizontalSizeClass == .regular {
       textView.backgroundColor = .systemGray4
+    }
+  }
+  
+  private func configureTextViewBackgroundColor() {
+    if UIScreen.main.traitCollection.horizontalSizeClass == .compact {
+      textView.backgroundColor = .systemGray4
+    } else if UIScreen.main.traitCollection.horizontalSizeClass == .regular {
+      textView.backgroundColor = .white
     }
   }
   
