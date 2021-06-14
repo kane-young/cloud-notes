@@ -47,14 +47,30 @@ final class MemoListViewModel {
     memos?.append(memo)
   }
   
-  func getMemoViewModel(for indexPath: IndexPath) -> MemoViewModel? {
-    guard let memoViewModels = memoViewModels else { return nil }
+  //만든 memoViewModels배열에서 필요한 index의 MemoViewModel만 가지고 오자!!
+  func getMemoViewModel(for indexPath: IndexPath) -> MemoViewModel {
     let memoViewModel = memoViewModels[indexPath.row]
     return memoViewModel
   }
   
+  //getMemo 메서드는 이제 DetailViewController로 넘어갈때 필요한 Memo가 어떤 것인지 알고 가져가기 위해서 정의해준 것이다
   func getMemo(for indexPath: IndexPath) -> Memo? {
-    guard let memos = memos else { return nil }
     return memos[indexPath.row]
+  }
+  
+  // BarButton에 있는 + 버튼으로 Memo를 추가해주기 위해서!!! CoreData 내에 저장해주는 로직!!
+  func addMemo() {
+    let memo = Memo(context: memoServiceAdapter.context)
+    memo.title = ""
+    memo.body = ""
+    memo.lastModified = Int32(Date().timeIntervalSince1970)
+    memoServiceAdapter.saveContext()
+  }
+  
+  // Swipe 했을 경우 Memo가 삭제되는 것을 구현하기 위한 로직
+  func deleteMemo(_ indexPath: IndexPath) {
+    let person = self.memos[indexPath.row]
+    memoServiceAdapter.context.delete(person)
+    memoServiceAdapter.saveContext()
   }
 }
