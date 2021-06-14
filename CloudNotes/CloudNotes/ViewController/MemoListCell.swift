@@ -76,9 +76,18 @@ final class MemoListCell: UITableViewCell {
   }
   
   func configure(with viewModel: MemoViewModel) {
-    titleLabel.text = viewModel.title
+    if viewModel.title.isEmpty == true {
+      titleLabel.text = "새로운 메세지"
+    } else {
+      titleLabel.text = viewModel.title
+    }
+    if viewModel.content.isEmpty == true {
+      contentLabel.text = "추가 텍스트 없음"
+    } else {
+      let splitString = viewModel.content.split(separator: "\n").map{ String($0) }.first
+      contentLabel.text = splitString
+    }
     dateLabel.text = viewModel.date
-    contentLabel.text = viewModel.content
   }
 }
 
