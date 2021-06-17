@@ -16,12 +16,14 @@ final class MemoDetailViewModel {
   private let context = MemoProvider.shared.context
   private lazy var memo: Memo = Memo(context: context)
   var delegate: MemoDetailViewModelDelegate?
-  var date: Int32 {
-    return memo.lastModified
-  }
+  
+  var date: Date { return memo?.lastModified }
   var content: String {
-    guard let title = memo.title else { return ContentConstant.emptyString }
-    guard let body = memo.body else { return ContentConstant.emptyString }
+    let title = memo?.title ?? ""
+    let body = memo?.body ?? ""
+    if title.isEmpty == true && body.isEmpty == true {
+      return ContentConstant.emptyString
+    }
     return title + ContentConstant.doubleNewLine + body
   }
   

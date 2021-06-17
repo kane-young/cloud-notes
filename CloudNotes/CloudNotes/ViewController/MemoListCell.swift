@@ -75,6 +75,7 @@ final class MemoListCell: UITableViewCell {
     ])
   }
   
+<<<<<<< Updated upstream
   func configure(with viewModel: MemoViewModel) {
     if viewModel.title.isEmpty == true {
       titleLabel.text = "새로운 메세지"
@@ -87,11 +88,16 @@ final class MemoListCell: UITableViewCell {
       let splitString = viewModel.content.split(separator: "\n").map{ String($0) }.first
       contentLabel.text = splitString
     }
+=======
+  func configure(with viewModel: MemoTableViewCellModel) {
+    titleLabel.text = viewModel.title
+    contentLabel.text = viewModel.content
+>>>>>>> Stashed changes
     dateLabel.text = viewModel.date
   }
 }
 
-struct MemoViewModel {
+struct MemoTableViewCellModel {
   let title: String
   let date: String
   let content: String

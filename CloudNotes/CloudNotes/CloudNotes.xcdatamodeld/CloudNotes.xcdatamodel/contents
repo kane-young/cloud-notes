@@ -2,7 +2,11 @@
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="18154" systemVersion="20E232" minimumToolsVersion="Automatic" sourceLanguage="Swift" usedWithCloudKit="YES" userDefinedModelVersionIdentifier="">
     <entity name="Memo" representedClassName="Memo" syncable="YES" codeGenerationType="class">
         <attribute name="body" optional="YES" attributeType="String"/>
+<<<<<<< Updated upstream
         <attribute name="lastModified" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
+=======
+        <attribute name="lastModified" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+>>>>>>> Stashed changes
         <attribute name="title" optional="YES" attributeType="String"/>
     </entity>
     <elements>

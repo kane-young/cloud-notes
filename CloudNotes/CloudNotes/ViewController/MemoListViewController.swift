@@ -8,7 +8,14 @@
 import UIKit
 
 final class MemoListViewController: UITableViewController {
+<<<<<<< Updated upstream
   // MARK: - Constant and Variable
+=======
+  enum Style {
+    static let reuseIdentifier = "memoReuseCell"
+    static let titleString = "메모"
+  }
+>>>>>>> Stashed changes
   
   private let tableViewModel: MemoListViewModel = MemoListViewModel()
   
@@ -37,8 +44,12 @@ final class MemoListViewController: UITableViewController {
   
   override func viewDidLoad() {
     super.viewDidLoad()
+<<<<<<< Updated upstream
     self.navigationItem.rightBarButtonItem = addButton
     self.navigationItem.title = Style.titleString
+=======
+    configureNavigationBar()
+>>>>>>> Stashed changes
     configureTableView()
   }
   
@@ -58,6 +69,14 @@ final class MemoListViewController: UITableViewController {
     tableView.delegate = self
     tableView.dataSource = self
     tableView.register(MemoListCell.self, forCellReuseIdentifier: Style.reuseIdentifier)
+<<<<<<< Updated upstream
+=======
+  }
+  
+  private func configureNavigationBar() {
+    self.navigationItem.rightBarButtonItem = addButton
+    self.navigationItem.title = Style.titleString
+>>>>>>> Stashed changes
   }
   
   // MARK: - Table view data source
